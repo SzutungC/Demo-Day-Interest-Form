@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Investor Interest Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens transcribed from the Proof of Privacy design system
+     (tokens/colors.css, typography.css, effects.css). */
+  :root {
+    --pop-ink: #001921;
+    --pop-bone: #f2efe6;
+    --pop-white: #ffffff;
+    --pop-pink: #e175b1;
+    --pop-aqua: #bfeef4;
+    --pop-mist: #d1e4e8;
+    --pop-mint: #e3f5e5;
+
+    --bg: var(--pop-ink);
+    --surface: var(--pop-ink);
+    --text: var(--pop-bone);
+    --text-muted: rgba(242, 239, 230, 0.64);
+    --text-faint: rgba(242, 239, 230, 0.42);
+    --ring: rgba(255, 255, 255, 0.16);
+    --ring-strong: rgba(255, 255, 255, 0.3);
+    --accent: var(--pop-pink);
+    --accent-ink: var(--pop-ink);
+    --danger: #e2836c;
+
+    --gradient-ascend: linear-gradient(180deg, #001921 0%, #016a78 55%, #bfeef4 100%);
+
+    --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'DM Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+    --radius-pill: 10px;
+    --radius-card: 20px;
+    --dur: 220ms cubic-bezier(0.2, 0, 0, 1);
+    font-size: 16px;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  h1, h2, .company-name, .submit-btn, .request-btn, .pill-btn {
+    font-family: var(--font-display);
+    font-weight: 500;
+  }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .mono { font-family: var(--font-mono); letter-spacing: -0.02em; }
+
+  .dot {
+    display: inline-block;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pop-pink);
+  }
+
+  .shell {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px 96px;
+  }
+
+  /* ---------- Hero ---------- */
+  header.page-head { padding: 32px 0 36px; }
+
+  .brand-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 0 0 20px;
+  }
+  .brand-logo { height: 32px; width: auto; color: var(--text); flex: none; }
+  .snf-logo { height: 26px; width: auto; flex: none; }
+  .snf-logo-light { display: none; }
+
+  .brand-divider {
+    height: 1px;
+    background: var(--pop-pink);
+    margin: 0 0 28px;
+  }
+
+  h1 {
+    font-size: clamp(26px, 5vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 10px;
+    color: var(--text);
+    text-wrap: balance;
+  }
+  .event-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12.5px;
+  }
+
+  .intro-copy {
+    font-size: 15.5px;
+    color: var(--text-muted);
+    margin: 0 0 26px;
+  }
+  .intro-welcome {
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--text);
+  }
+  .accent-strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .accent-pink {
+    color: var(--pop-pink);
+    font-weight: 700;
+  }
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 14px 28px 1fr;
+    column-gap: 10px;
+    align-items: start;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .step .dot { margin-top: 6px; }
+  .step-num { font-weight: 500; color: var(--text); }
+
+  .notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0 0 32px;
+    padding: 16px 20px;
+    background: var(--pop-mist);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    border-radius: var(--radius-card);
+  }
+  .notice .dot { margin-top: 6px; }
+  .notice p {
+    margin: 0;
+    font-size: 13px;
+    color: rgba(0, 25, 33, 0.72);
+    line-height: 1.5;
+  }
+
+  /* ---------- Team cards ---------- */
+  .teams {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 40px 0 56px;
+  }
+  .team-card {
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    border-radius: var(--radius-card);
+    padding: 20px 22px;
+    transition: box-shadow var(--dur);
+  }
+  .team-card[data-selected="true"] {
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  .team-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .team-logo {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background: var(--pop-mist);
+    color: var(--pop-ink);
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: -0.02em;
+    overflow: hidden;
+  }
+  .team-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 7px;
+    box-sizing: border-box;
+  }
+  .team-heading { flex: 1 1 auto; min-width: 0; }
+  .company-name {
+    font-size: 19px;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    flex-wrap: wrap;
+  }
+  .tagline {
+    font-weight: 400;
+    font-size: 14.5px;
+    color: var(--text-muted);
+  }
+  .highlight {
+    font-size: 14px;
+    color: var(--text);
+    margin: 10px 0 0;
+  }
+  .highlight b { font-weight: 700; }
+
+  .request-btn {
+    flex: none;
+    appearance: none;
+    box-shadow: inset 0 0 0 1px var(--text);
+    background: transparent;
+    color: var(--text);
+    font-size: 13px;
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background var(--dur), opacity var(--dur);
+  }
+  .request-btn:hover { background: rgba(191, 238, 244, 0.35); }
+  .request-btn:active { opacity: 0.85; }
+  .request-btn[data-selected="true"] {
+    box-shadow: none;
+    background: var(--pop-pink);
+    color: var(--pop-ink);
+  }
+  .request-btn[data-selected="true"]:hover { opacity: 0.9; background: var(--pop-pink); }
+
+  .team-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    margin: 16px 0 0;
+    font-size: 13.5px;
+  }
+  .team-links a { color: var(--pop-pink); }
+  .team-links a:hover { text-decoration: underline; text-decoration-color: var(--pop-pink); }
+  .team-links .sep { width: 5px; height: 5px; }
+  .link-pending { color: var(--text-faint); cursor: default; }
+
+  .founders {
+    margin: 12px 0 0;
+    padding-top: 12px;
+    box-shadow: inset 0 1px 0 0 var(--ring);
+    font-size: 13.5px;
+    color: var(--text-faint);
+  }
+  .founders .label { color: var(--text-faint); margin-right: 6px; }
+  .founders a { color: var(--text-muted); font-weight: 500; }
+  .founders a:hover { text-decoration: underline; text-decoration-color: var(--pop-pink); }
+
+  /* ---------- Sticky selection pill ---------- */
+  .selection-pill {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--pop-ink);
+    color: var(--pop-bone);
+    padding: 11px 12px 11px 20px;
+    border-radius: var(--radius-pill);
+    box-shadow: inset 0 0 0 1px var(--pop-white);
+    font-size: 14px;
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur);
+  }
+  .selection-pill[data-visible="true"] { opacity: 1; pointer-events: auto; }
+  .selection-pill .count { font-variant-numeric: tabular-nums; }
+  .selection-pill .count b { font-weight: 700; }
+  .pill-btn {
+    appearance: none;
+    border: none;
+    background: var(--pop-pink);
+    color: var(--pop-ink);
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+  }
+  .pill-btn:active { opacity: 0.85; }
+
+  /* ---------- Bottom section ---------- */
+  .request-section {
+    border-radius: var(--radius-card);
+    background: var(--gradient-ascend);
+    padding: 34px 20px 40px;
+    margin-top: 48px;
+  }
+  .request-section h2 {
+    font-size: 24px;
+    margin: 0 0 6px;
+    color: var(--pop-bone);
+  }
+  .request-section > p.lede {
+    color: rgba(242, 239, 230, 0.8);
+    font-size: 15px;
+    margin: 0 0 24px;
+  }
+
+  .selected-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  .empty-selection {
+    background: var(--surface);
+    font-size: 14px;
+    color: var(--text-faint);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    text-align: center;
+  }
+  .selected-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    border-radius: var(--radius-pill);
+    padding: 10px 14px;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .selected-row button {
+    appearance: none;
+    border: none;
+    background: none;
+    color: var(--text-faint);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 6px;
+  }
+  .selected-row button:hover { color: var(--danger); }
+
+  form.intro-form {
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    border-radius: var(--radius-card);
+    padding: 24px;
+  }
+  .field { margin-bottom: 16px; }
+  .field:last-of-type { margin-bottom: 0; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .field label .req { color: var(--accent); }
+  .field input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 11px 13px;
+    border-radius: var(--radius-pill);
+    border: none;
+    box-shadow: inset 0 0 0 1px var(--ring-strong);
+    background: var(--bg);
+    color: var(--text);
+  }
+  .field input::placeholder { color: var(--text-faint); }
+  .field input:focus { box-shadow: inset 0 0 0 1px var(--accent); }
+  .field-error { font-size: 12.5px; color: var(--danger); margin-top: 5px; display: none; }
+  .field.invalid input { box-shadow: inset 0 0 0 1px var(--danger); }
+  .field.invalid .field-error { display: block; }
+
+  .submit-row { margin-top: 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .submit-btn {
+    appearance: none;
+    border: none;
+    background: var(--pop-pink);
+    color: var(--pop-ink);
+    font-size: 15px;
+    padding: 13px 24px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: opacity var(--dur);
+  }
+  .submit-btn:hover:not(:disabled) { opacity: 0.88; }
+  .submit-btn:active:not(:disabled) { opacity: 0.85; }
+  .submit-btn:disabled {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--ring);
+    color: var(--text-faint);
+    cursor: not-allowed;
+  }
+  .submit-status { font-size: 13px; color: var(--text-faint); }
+  .submit-status.error { color: var(--danger); }
+
+  .confirmation {
+    background: var(--pop-mint);
+    box-shadow: inset 0 0 0 1px var(--pop-pink);
+    border-radius: var(--radius-card);
+    padding: 28px 24px;
+    text-align: left;
+  }
+  .confirmation h3 { color: var(--pop-ink); margin: 0 0 6px; font-size: 19px; font-weight: 500; }
+  .confirmation p { margin: 0; font-size: 14.5px; color: rgba(0, 25, 33, 0.68); }
+  .confirmation ul {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: var(--pop-ink);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .confirmation li {
+    background: var(--pop-white);
+    box-shadow: inset 0 0 0 1px rgba(0, 25, 33, 0.12);
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+  }
+
+  footer.disclaimer {
+    margin-top: 40px;
+    padding: 18px 20px;
+    background: rgba(0, 25, 33, 0.35);
+    border-radius: var(--radius-card);
+  }
+  .credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    color: var(--pop-bone);
+    margin: 0 0 12px;
+  }
+  footer.disclaimer p {
+    font-size: 12px;
+    color: rgba(242, 239, 230, 0.75);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="page-head">
+    <div class="brand-bar">
+      <svg class="brand-logo" viewBox="0 0 1792 431.283" role="img" aria-label="PROOF.">
+        <g transform="translate(1679.439 318.723)"><path d="M 56.28 112.56 C 40.482 112.56 27.054 107.426 15.996 97.157 C 5.332 86.494 0 72.868 0 56.28 C 0 39.692 5.332 26.264 15.996 15.995 C 27.054 5.332 40.482 0 56.28 0 C 72.473 0 85.902 5.332 96.565 15.995 C 107.229 26.264 112.561 39.692 112.561 56.28 C 112.561 72.868 107.229 86.494 96.565 97.157 C 85.902 107.426 72.473 112.56 56.28 112.56 Z" fill="#E175B1"/></g>
+        <g transform="translate(1437.755 8.293)"><path d="M 0 414.695 L 0 0 L 260.667 0 L 260.667 71.091 L 78.2 71.091 L 78.2 171.21 L 246.448 171.21 L 246.448 242.301 L 78.2 242.301 L 78.2 414.695 L 0 414.695 Z" fill="currentColor"/></g>
+        <g transform="translate(1051.62 0)"><path d="M 170.618 431.283 C 118.485 431.283 77.015 417.065 46.209 388.629 C 15.403 359.798 0 318.723 0 265.405 L 0 165.878 C 0 112.56 15.403 71.683 46.209 43.247 C 77.015 14.416 118.485 0 170.618 0 C 222.751 0 264.221 14.416 295.027 43.247 C 325.833 71.683 341.236 112.56 341.236 165.878 L 341.236 265.405 C 341.236 318.723 325.833 359.798 295.027 388.629 C 264.221 417.065 222.751 431.283 170.618 431.283 Z M 170.618 361.378 C 199.844 361.378 222.554 352.886 238.747 335.903 C 254.94 318.921 263.036 296.211 263.036 267.775 L 263.036 163.509 C 263.036 135.072 254.94 112.363 238.747 95.38 C 222.554 78.397 199.844 69.906 170.618 69.906 C 141.787 69.906 119.077 78.397 102.489 95.38 C 86.296 112.363 78.2 135.072 78.2 163.509 L 78.2 267.775 C 78.2 296.211 86.296 318.921 102.489 335.903 C 119.077 352.886 141.787 361.378 170.618 361.378 Z" fill="currentColor"/></g>
+        <g transform="translate(674.991 0)"><path d="M 170.618 431.283 C 118.485 431.283 77.015 417.065 46.209 388.629 C 15.403 359.798 0 318.723 0 265.405 L 0 165.878 C 0 112.56 15.403 71.683 46.209 43.247 C 77.015 14.416 118.485 0 170.618 0 C 222.751 0 264.221 14.416 295.027 43.247 C 325.833 71.683 341.236 112.56 341.236 165.878 L 341.236 265.405 C 341.236 318.723 325.833 359.798 295.027 388.629 C 264.221 417.065 222.751 431.283 170.618 431.283 Z M 170.618 361.378 C 199.844 361.378 222.554 352.886 238.747 335.903 C 254.94 318.921 263.036 296.211 263.036 267.775 L 263.036 163.509 C 263.036 135.072 254.94 112.363 238.747 95.38 C 222.554 78.397 199.844 69.906 170.618 69.906 C 141.787 69.906 119.077 78.397 102.489 95.38 C 86.296 112.363 78.2 135.072 78.2 163.509 L 78.2 267.775 C 78.2 296.211 86.296 318.921 102.489 335.903 C 119.077 352.886 141.787 361.378 170.618 361.378 Z" fill="currentColor"/></g>
+        <g transform="translate(333.838 8.293)"><path d="M 0 414.695 L 0 0 L 180.097 0 C 206.164 0 228.873 4.542 248.226 13.626 C 267.578 22.71 282.586 35.545 293.25 52.133 C 303.914 68.721 309.245 88.271 309.245 110.783 L 309.245 117.892 C 309.245 142.774 303.321 162.916 291.473 178.319 C 279.624 193.722 265.011 204.978 247.633 212.087 L 247.633 222.751 C 263.431 223.541 275.675 229.07 284.363 239.339 C 293.052 249.212 297.397 262.443 297.397 279.031 L 297.397 414.695 L 219.197 414.695 L 219.197 290.287 C 219.197 280.808 216.63 273.107 211.495 267.182 C 206.756 261.258 198.66 258.296 187.206 258.296 L 78.2 258.296 L 78.2 414.695 L 0 414.695 Z M 78.2 187.205 L 171.803 187.205 C 190.366 187.205 204.781 182.269 215.05 172.395 C 225.714 162.126 231.045 148.698 231.045 132.11 L 231.045 126.186 C 231.045 109.598 225.911 96.367 215.642 86.494 C 205.374 76.225 190.761 71.091 171.803 71.091 L 78.2 71.091 L 78.2 187.205 Z" fill="currentColor"/></g>
+        <g transform="translate(0 8.293)"><path d="M 0 414.695 L 0 0 L 170.618 0 C 196.685 0 219.592 5.332 239.339 15.995 C 259.482 26.264 275.082 40.877 286.141 59.835 C 297.594 78.792 303.321 101.304 303.321 127.371 L 303.321 135.665 C 303.321 161.336 297.397 183.848 285.548 203.201 C 274.095 222.158 258.297 236.969 238.154 247.632 C 218.407 257.901 195.895 263.035 170.618 263.035 L 78.2 263.035 L 78.2 414.695 L 0 414.695 Z M 78.2 191.945 L 162.917 191.945 C 181.479 191.945 196.487 186.81 207.941 176.542 C 219.394 166.273 225.121 152.252 225.121 134.48 L 225.121 128.556 C 225.121 110.783 219.394 96.762 207.941 86.494 C 196.487 76.225 181.479 71.091 162.917 71.091 L 78.2 71.091 L 78.2 191.945 Z" fill="currentColor"/></g>
+      </svg>
+      <img class="snf-logo snf-logo-light" src="logos/snf-linear-gradient-light.png" alt="Starknet Foundation" />
+      <img class="snf-logo snf-logo-dark" src="logos/snf-linear-gradient-dark.png" alt="Starknet Foundation" />
+    </div>
+    <div class="brand-divider"></div>
+    <h1>Demo Day &mdash; Investor Interest Form</h1>
+    <p class="event-date mono"><span class="dot"></span>Sept 22, 2026 &middot; Virtual &middot; Cohort 01</p>
+    <p class="intro-copy intro-welcome" style="margin-top: 20px;">Welcome to <strong class="accent-pink">Starknet Proof of Privacy</strong> Demo Day.</p>
+    <div class="steps">
+      <div class="step mono">
+        <span class="dot"></span>
+        <strong class="step-num">01</strong>
+        <span>Review the graduating startups (description, website, pitch deck and pitch video) and click <strong class="accent-strong">Request Intro</strong> for each one you'd like an investment introduction to &mdash; select as many as you like.</span>
+      </div>
+      <div class="step mono">
+        <span class="dot"></span>
+        <strong class="step-num">02</strong>
+        <span>Enter your details and submit.</span>
+      </div>
+      <div class="step mono">
+        <span class="dot"></span>
+        <strong class="step-num">03</strong>
+        <span>We'll review, make introductions, and share further information on the startups you selected.</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="notice">
+    <span class="dot"></span>
+    <p>This form is exclusively for qualified investors interested in exploring investment
+      opportunities with these startups. It is not intended for partnership, commercial, BD, or
+      other non-investment requests.</p>
+  </div>
+
+  <section class="teams" id="teams"></section>
+
+  <div class="brand-divider"></div>
+
+  <section class="request-section" id="request-section">
+    <h2>Request Your Intros</h2>
+    <p class="lede">We'll follow up within a few business days on every team you select below.</p>
+
+    <div class="selected-list" id="selected-list"></div>
+
+    <form class="intro-form" id="intro-form" novalidate>
+      <div class="field" id="field-name">
+        <label for="input-name">Full Name <span class="req">*</span></label>
+        <input type="text" id="input-name" name="name" placeholder="Jane Doe" autocomplete="name" />
+        <p class="field-error">Enter your full name.</p>
+      </div>
+      <div class="field" id="field-email">
+        <label for="input-email">Email <span class="req">*</span></label>
+        <input type="email" id="input-email" name="email" placeholder="jane@fund.com" autocomplete="email" />
+        <p class="field-error">Enter a valid email address.</p>
+      </div>
+      <div class="field" id="field-fund">
+        <label for="input-fund">Fund / Company Name <span class="req">*</span></label>
+        <input type="text" id="input-fund" name="fund" placeholder="Acme Ventures" autocomplete="organization" />
+        <p class="field-error">Enter your fund or company name.</p>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="submit-btn" id="submit-btn" disabled>Submit Request</button>
+        <span class="submit-status" id="submit-status"></span>
+      </div>
+    </form>
+
+    <div class="confirmation" id="confirmation" hidden>
+      <h3>Thank you for your interest &mdash; request received!</h3>
+      <p>We'll follow up to make the intro for the teams below.</p>
+      <ul id="confirmation-teams"></ul>
+    </div>
+
+    <footer class="disclaimer">
+      <p class="credit mono"><span class="dot"></span>Proof of privacy.</p>
+      <p>
+        This material is provided for informational purposes only and does not constitute investment
+        advice, an offer, or a solicitation. Access is limited to recipients who qualify as accredited
+        or sophisticated investors under applicable law, or who are established participants in the
+        relevant ecosystem. By viewing this material, you represent that you meet one of these criteria.
+      </p>
+    </footer>
+  </section>
+
+</div>
+
+<div class="selection-pill" id="selection-pill">
+  <span class="count mono"><b id="pill-count">0</b> teams selected</span>
+  <button type="button" class="pill-btn" id="pill-jump">Review &amp; submit</button>
+</div>
+
+<script>
+  // ---------------------------------------------------------------------
+  // Team data, from Proof Teams Info.numbers. Traction wasn't filled in
+  // there yet, so those lines are left off rather than invented. Links
+  // left blank in the sheet render as plain text until they're added.
+  // ---------------------------------------------------------------------
+  const TEAMS = [
+    {
+      id: "team-1",
+      name: "Chance",
+      initials: "CH",
+      logo: "logos/chance.png",
+      tagline: "Chance is a verification layer for AI agents that move money.",
+      highlight: "<b>$103M</b> cumulative notional volume across all PMs &middot; <b>5.8K</b> unique users",
+      links: { website: "https://chance.cc/", pitch: "", deck: "", social: "https://x.com/chance_" },
+      founders: [
+        { name: "Lorex", url: "https://x.com/lorexx_xx" }
+      ]
+    },
+    {
+      id: "team-2",
+      name: "DeFa by InvoiceMate",
+      initials: "DI",
+      logo: "logos/defa-by-invoicemate.png",
+      tagline: "DeFa by InvoiceMate provides settlement liquidity to licensed cross-border payment operators.",
+      highlight: "<b>$670M</b> transaction volume processed &middot; <b>$130M</b> private liquidity deployed &middot; <b>$6.6M</b> investor yield generated",
+      links: { website: "https://imdefa.com/", pitch: "", deck: "https://docsend.com/view/ptqp8tyztvrcamsh", social: "https://x.com/defaprimitive" },
+      founders: [
+        { name: "Muhammad Ibrahim", url: "https://www.linkedin.com/in/m-ibrahim-salman/" },
+        { name: "Muhammad Salman Anjum", url: "https://www.linkedin.com/in/chiefmate/" }
+      ]
+    },
+    {
+      id: "team-3",
+      name: "Chipi Pay",
+      initials: "CP",
+      logo: "logos/chipi-pay.png",
+      tagline: "Chipi Pay offers payroll loans. Your team requests, receives and repays through payroll.",
+      highlight: "",
+      links: { website: "https://rocabeneficios.vercel.app/en", pitch: "", deck: "", social: "https://x.com/HiChipiPay" },
+      founders: [
+        { name: "Carlos Castillo", url: "https://www.linkedin.com/in/carloscastilloperera/" }
+      ]
+    },
+    {
+      id: "team-4",
+      name: "Agama",
+      initials: "AG",
+      logo: "logos/agama.svg",
+      tagline: "Agama is building yield infrastructure for RWAs.",
+      highlight: "Ex-Google and VC team",
+      links: { website: "https://agama.finance/", pitch: "", deck: "", social: "https://x.com/agamafinance" },
+      founders: [
+        { name: "Tom David", url: "https://www.linkedin.com/in/tom-david1/" },
+        { name: "Eden Baudin", url: "https://www.linkedin.com/in/edenbdn/" }
+      ]
+    },
+    {
+      id: "team-5",
+      name: "Haven",
+      initials: "HA",
+      logo: "logos/haven.svg",
+      tagline: "Haven is the privacy-by-design neobank for the on-chain economy.",
+      highlight: "<b>$30K</b> monthly volume &middot; <b>1K</b> unique users",
+      links: { website: "https://app.haven.hn/", pitch: "", deck: "", social: "https://x.com/Haven_Hn_" },
+      founders: [
+        { name: "João Bolsoni (JB)", url: "https://www.linkedin.com/in/jo%C3%A3o-bolsoni-7b895817b/" }
+      ]
+    },
+    {
+      id: "team-6",
+      name: "CREDI",
+      initials: "CR",
+      logo: "logos/credi.png",
+      tagline: "CREDI combines institutional credit management with digital asset infrastructure to create the next generation of private credit.",
+      highlight: "",
+      links: { website: "https://www.credilabs.io/", pitch: "", deck: "", social: "https://x.com/credilabs" },
+      founders: [
+        { name: "Alessio Marinelli", url: "https://www.linkedin.com/in/marinellialessio/" }
+      ]
+    },
+    {
+      id: "team-7",
+      name: "Helix Assets",
+      initials: "HA",
+      logo: "logos/helix-assets.png",
+      tagline: "Helix builds native multi-chain liquid staking for institutions.",
+      highlight: "Backed by Starknet, Canton, Stellar",
+      links: { website: "https://x.com/helixassets", pitch: "", deck: "", social: "https://x.com/helixassets" },
+      founders: [
+        { name: "Sneh Bhatt", url: "https://www.linkedin.com/in/snehbhatt/" },
+        { name: "Zan Arslan", url: "https://www.linkedin.com/in/zan-arslan-611480169/" },
+        { name: "Yie-Sean Teoh", url: "https://www.linkedin.com/in/yieseanteoh/" }
+      ]
+    }
+  ];
+
+  const state = { selected: new Set() };
+
+  const teamsEl = document.getElementById("teams");
+  const pillEl = document.getElementById("selection-pill");
+  const pillCountEl = document.getElementById("pill-count");
+  const selectedListEl = document.getElementById("selected-list");
+  const submitBtn = document.getElementById("submit-btn");
+  const submitStatus = document.getElementById("submit-status");
+  const formEl = document.getElementById("intro-form");
+  const confirmationEl = document.getElementById("confirmation");
+  const confirmationTeamsEl = document.getElementById("confirmation-teams");
+
+  // Renders a live link when a URL is present; otherwise plain, non-clickable text.
+  function linkOrText(url, label) {
+    const trimmed = (url || "").trim();
+    return trimmed
+      ? `<a href="${trimmed}" target="_blank" rel="noopener">${label}</a>`
+      : `<span class="link-pending">${label}</span>`;
+  }
+
+  function renderTeams() {
+    teamsEl.innerHTML = TEAMS.map(team => `
+      <article class="team-card" id="card-${team.id}" data-selected="false">
+        <div class="team-top">
+          <div class="team-logo">${team.logo
+            ? `<img src="${team.logo}" alt="${team.name} logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${team.initials}'}))" />`
+            : team.initials}</div>
+          <div class="team-heading">
+            <p class="company-name">${team.name} <span class="tagline">${team.tagline}</span></p>
+            ${team.highlight ? `<p class="highlight">${team.highlight}</p>` : ""}
+          </div>
+          <button type="button" class="request-btn" data-team="${team.id}" data-selected="false">
+            Request Intro
+          </button>
+        </div>
+        <div class="team-links">
+          ${linkOrText(team.links.website, "Website")}
+          <span class="dot sep"></span>
+          ${linkOrText(team.links.pitch, "Pitch Video")}
+          <span class="dot sep"></span>
+          ${linkOrText(team.links.deck, "Deck")}
+          <span class="dot sep"></span>
+          ${linkOrText(team.links.social, "X")}
+        </div>
+        <div class="founders">
+          <span class="label">Founders:</span>${team.founders.map(f => linkOrText(f.url, f.name)).join(" / ")}
+        </div>
+      </article>
+    `).join("");
+
+    teamsEl.querySelectorAll(".request-btn").forEach(btn => {
+      btn.addEventListener("click", () => toggleTeam(btn.dataset.team));
+    });
+  }
+
+  function toggleTeam(teamId) {
+    if (state.selected.has(teamId)) {
+      state.selected.delete(teamId);
+    } else {
+      state.selected.add(teamId);
+    }
+    syncUI();
+  }
+
+  function syncUI() {
+    TEAMS.forEach(team => {
+      const isSelected = state.selected.has(team.id);
+      const card = document.getElementById(`card-${team.id}`);
+      const btn = teamsEl.querySelector(`.request-btn[data-team="${team.id}"]`);
+      card.dataset.selected = String(isSelected);
+      btn.dataset.selected = String(isSelected);
+      btn.textContent = isSelected ? "Added ✓" : "Request Intro";
+    });
+
+    const count = state.selected.size;
+    pillCountEl.textContent = String(count);
+    pillEl.dataset.visible = String(count > 0);
+
+    renderSelectedList();
+    updateSubmitState();
+  }
+
+  function renderSelectedList() {
+    if (state.selected.size === 0) {
+      selectedListEl.innerHTML = `<div class="empty-selection">No teams selected yet. Click "Request Intro" on any card above.</div>`;
+      return;
+    }
+    selectedListEl.innerHTML = Array.from(state.selected).map(id => {
+      const team = TEAMS.find(t => t.id === id);
+      return `
+        <div class="selected-row">
+          <span>${team.name}</span>
+          <button type="button" data-remove="${id}" aria-label="Remove ${team.name}">Remove</button>
+        </div>
+      `;
+    }).join("");
+
+    selectedListEl.querySelectorAll("[data-remove]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.selected.delete(btn.dataset.remove);
+        syncUI();
+      });
+    });
+  }
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  function updateSubmitState() {
+    const name = document.getElementById("input-name").value.trim();
+    const email = document.getElementById("input-email").value.trim();
+    const fund = document.getElementById("input-fund").value.trim();
+    const ready = state.selected.size > 0 && name && isValidEmail(email) && fund;
+    submitBtn.disabled = !ready;
+  }
+
+  ["input-name", "input-email", "input-fund"].forEach(id => {
+    document.getElementById(id).addEventListener("input", () => {
+      clearFieldError(id);
+      updateSubmitState();
+    });
+  });
+
+  function clearFieldError(inputId) {
+    const fieldId = "field-" + inputId.replace("input-", "");
+    document.getElementById(fieldId).classList.remove("invalid");
+  }
+
+  function validateForm() {
+    let valid = true;
+    const name = document.getElementById("input-name").value.trim();
+    const email = document.getElementById("input-email").value.trim();
+    const fund = document.getElementById("input-fund").value.trim();
+
+    if (!name) { document.getElementById("field-name").classList.add("invalid"); valid = false; }
+    if (!email || !isValidEmail(email)) { document.getElementById("field-email").classList.add("invalid"); valid = false; }
+    if (!fund) { document.getElementById("field-fund").classList.add("invalid"); valid = false; }
+
+    return valid;
+  }
+
+  // ---------------------------------------------------------------------
+  // Backend: a Google Apps Script Web App bound to a Google Sheet.
+  // See google-apps-script/Code.gs for the script and setup steps.
+  // Paste your deployed Web App URL (ends in /exec) below.
+  // ---------------------------------------------------------------------
+  const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzyyMf3k9BeIairKCptVcjwBV-feGKTKQnnR6MQMoWpdeBYmXL_AvQ8glu3FJxGN7X0/exec";
+
+  async function submitToSheet(payload) {
+    // Apps Script's /exec endpoint responds with a redirect that, per the
+    // fetch spec, gets followed as a GET — so the JSON response body isn't
+    // reliably readable from the browser. doPost still runs server-side
+    // before that redirect is issued, so we fire in no-cors mode and treat
+    // "the request was sent without a network error" as success. All
+    // required-field validation already happens client-side before this
+    // is called.
+    await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+    });
+  }
+
+  formEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!validateForm() || state.selected.size === 0) return;
+
+    const payload = {
+      name: document.getElementById("input-name").value.trim(),
+      email: document.getElementById("input-email").value.trim(),
+      fund: document.getElementById("input-fund").value.trim(),
+      teams: Array.from(state.selected).map(id => TEAMS.find(t => t.id === id).name),
+    };
+
+    submitBtn.disabled = true;
+    submitStatus.textContent = "Submitting…";
+    submitStatus.classList.remove("error");
+
+    try {
+      await submitToSheet(payload);
+      formEl.hidden = true;
+      confirmationEl.hidden = false;
+      confirmationTeamsEl.innerHTML = payload.teams.map(name => `<li>${name}</li>`).join("");
+      pillEl.dataset.visible = "false";
+    } catch (err) {
+      submitStatus.textContent = "Something went wrong — please try again.";
+      submitStatus.classList.add("error");
+      submitBtn.disabled = false;
+      console.error(err);
+    }
+  });
+
+  document.getElementById("pill-jump").addEventListener("click", () => {
+    document.getElementById("request-section").scrollIntoView({ behavior: "smooth" });
+  });
+
+  renderTeams();
+  syncUI();
+</script>
+</body>
+</html>
