@@ -79,7 +79,7 @@
   }
 
   /* ---------- Hero ---------- */
-  header.page-head { padding: 32px 0 36px; }
+  header.page-head { padding: 32px 0 20px; }
 
   .brand-bar {
     display: flex;
@@ -155,7 +155,7 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    margin: 0 0 32px;
+    margin: 24px 0 28px;
     padding: 16px 20px;
     background: var(--pop-mist);
     box-shadow: inset 0 0 0 1px var(--ring);
@@ -174,7 +174,7 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    margin: 40px 0 56px;
+    margin: 24px 0 56px;
   }
   .team-card {
     display: grid;
@@ -335,7 +335,7 @@
     border-radius: var(--radius-card);
     background: var(--gradient-ascend);
     padding: 34px 20px 40px;
-    margin-top: 48px;
+    margin-top: 24px;
   }
   .request-section h2 {
     font-size: 24px;
@@ -473,7 +473,7 @@
     gap: 10px;
     font-size: 12.5px;
     color: var(--pop-bone);
-    margin: 0 0 12px;
+    margin: 0 0 48px;
   }
   footer.disclaimer p {
     font-size: 12px;
@@ -502,14 +502,14 @@
       <img class="snf-logo snf-logo-dark" src="logos/snf-linear-gradient-dark.png" alt="Starknet Foundation" />
     </div>
     <div class="brand-divider"></div>
-    <h1>Demo Day &mdash; Investor Interest Form</h1>
+    <h1>Demo Day &mdash; Interest Form</h1>
     <p class="event-date mono"><span class="dot"></span>Sept 22, 2026 &middot; Virtual &middot; Cohort 01</p>
     <p class="intro-copy intro-welcome" style="margin-top: 20px;">Welcome to <strong class="accent-pink">Starknet Proof of Privacy</strong> Demo Day.</p>
     <div class="steps">
       <div class="step mono">
         <span class="dot"></span>
         <strong class="step-num">01</strong>
-        <span>Review the graduating startups (description, website, pitch deck and pitch video) and click <strong class="accent-strong">Request Intro</strong> for each one you'd like an investment introduction to &mdash; select as many as you like.</span>
+        <span>Review the graduating startups (description, website, pitch deck and pitch video) and click <strong class="accent-strong">Request Intro</strong> for each one you'd like an introduction to &mdash; select as many as you like.</span>
       </div>
       <div class="step mono">
         <span class="dot"></span>
@@ -524,16 +524,9 @@
     </div>
   </header>
 
-  <div class="notice">
-    <span class="dot"></span>
-    <p>This form is exclusively for qualified investors interested in exploring investment
-      opportunities with these startups. It is not intended for partnership, commercial, BD, or
-      other non-investment requests.</p>
-  </div>
-
   <section class="teams" id="teams"></section>
 
-  <div class="brand-divider"></div>
+  <div class="brand-divider" style="margin-bottom: 16px;"></div>
 
   <section class="request-section" id="request-section">
     <h2>Request Your Intros</h2>
@@ -570,13 +563,24 @@
       <ul id="confirmation-teams"></ul>
     </div>
 
+    <div class="notice">
+      <span class="dot"></span>
+      <p>This form is exclusively for qualified investors interested in exploring investment
+        opportunities with these startups. It is not intended for partnership, commercial, BD, or
+        other non-investment requests.</p>
+    </div>
+
     <footer class="disclaimer">
       <p class="credit mono"><span class="dot"></span>Proof of privacy.</p>
       <p>
-        This material is provided for informational purposes only and does not constitute investment
-        advice, an offer, or a solicitation. Access is limited to recipients who qualify as accredited
-        or sophisticated investors under applicable law, or who are established participants in the
-        relevant ecosystem. By viewing this material, you represent that you meet one of these criteria.
+        This content is for informational purposes only and should not be construed as investment,
+        legal, or financial advice. It does not constitute an offer to sell or a solicitation of any
+        kind, and is not an endorsement of any product. Starknet is not a party to, and take no
+        responsibility for, any resulting discussions, terms, or transactions. It does not act as a
+        broker, placement agent, or investment adviser, and does not conduct due diligence on or
+        verify any information shared by either party. Any engagement or investment decision is
+        solely between the parties involved, at their own risk. Investors should conduct their own
+        due diligence and consult qualified advisors before making any decision.
       </p>
     </footer>
   </section>
