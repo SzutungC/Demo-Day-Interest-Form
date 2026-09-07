@@ -249,6 +249,24 @@
   }
   .request-btn:hover { background: rgba(191, 238, 244, 0.35); }
   .request-btn:active { opacity: 0.85; }
+
+  /* On narrow screens, sharing a row with the logo squeezes the tagline
+     and traction line into a very narrow, hard-to-read column. Drop the
+     button to its own full-width row so that text gets the full card
+     width to wrap in. */
+  @media (max-width: 480px) {
+    .team-top { flex-wrap: wrap; }
+    .team-logo { order: 1; }
+    .team-heading { order: 2; }
+    .request-btn {
+      order: 3;
+      flex: 1 1 100%;
+      margin-top: 14px;
+      text-align: center;
+      padding: 11px 16px;
+    }
+    .company-name { font-size: 18px; }
+  }
   .request-btn[data-selected="true"] {
     box-shadow: none;
     background: var(--pop-pink);
