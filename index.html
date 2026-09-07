@@ -177,6 +177,11 @@
     margin: 40px 0 56px;
   }
   .team-card {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    grid-template-areas: "logo heading button" "links links links" "founders founders founders";
+    column-gap: 14px;
+    align-items: start;
     background: var(--surface);
     box-shadow: inset 0 0 0 1px var(--ring);
     border-radius: var(--radius-card);
@@ -186,13 +191,8 @@
   .team-card[data-selected="true"] {
     box-shadow: inset 0 0 0 1px var(--accent);
   }
-  .team-top {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-  }
   .team-logo {
-    flex: none;
+    grid-area: logo;
     width: 44px;
     height: 44px;
     border-radius: var(--radius-pill);
@@ -213,7 +213,7 @@
     padding: 7px;
     box-sizing: border-box;
   }
-  .team-heading { flex: 1 1 auto; min-width: 0; }
+  .team-heading { grid-area: heading; min-width: 0; }
   .company-name {
     font-size: 19px;
     margin: 0;
@@ -235,7 +235,7 @@
   .highlight b { font-weight: 700; }
 
   .request-btn {
-    flex: none;
+    grid-area: button;
     appearance: none;
     box-shadow: inset 0 0 0 1px var(--text);
     background: transparent;
@@ -249,24 +249,6 @@
   }
   .request-btn:hover { background: rgba(191, 238, 244, 0.35); }
   .request-btn:active { opacity: 0.85; }
-
-  /* On narrow screens, sharing a row with the logo squeezes the tagline
-     and traction line into a very narrow, hard-to-read column. Drop the
-     button to its own full-width row so that text gets the full card
-     width to wrap in. */
-  @media (max-width: 480px) {
-    .team-top { flex-wrap: wrap; }
-    .team-logo { order: 1; }
-    .team-heading { order: 2; }
-    .request-btn {
-      order: 3;
-      flex: 1 1 100%;
-      margin-top: 14px;
-      text-align: center;
-      padding: 11px 16px;
-    }
-    .company-name { font-size: 18px; }
-  }
   .request-btn[data-selected="true"] {
     box-shadow: none;
     background: var(--pop-pink);
@@ -275,6 +257,7 @@
   .request-btn[data-selected="true"]:hover { opacity: 0.9; background: var(--pop-pink); }
 
   .team-links {
+    grid-area: links;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -288,6 +271,7 @@
   .link-pending { color: var(--text-faint); cursor: default; }
 
   .founders {
+    grid-area: founders;
     margin: 12px 0 0;
     padding-top: 12px;
     box-shadow: inset 0 1px 0 0 var(--ring);
@@ -297,6 +281,19 @@
   .founders .label { color: var(--text-faint); margin-right: 6px; }
   .founders a { color: var(--text-muted); font-weight: 500; }
   .founders a:hover { text-decoration: underline; text-decoration-color: var(--pop-pink); }
+
+  /* On narrow screens, sharing a row with the logo squeezes the tagline
+     and traction line into a very narrow column, and puts the button
+     ahead of the founder info. Reflow to a single column, with the
+     button moved to its own full-width row at the very end. */
+  @media (max-width: 480px) {
+    .team-card {
+      grid-template-columns: 44px 1fr;
+      grid-template-areas: "logo heading" "links links" "founders founders" "button button";
+    }
+    .request-btn { margin-top: 16px; text-align: center; padding: 11px 16px; }
+    .company-name { font-size: 18px; }
+  }
 
   /* ---------- Sticky selection pill ---------- */
   .selection-pill {
@@ -711,18 +708,16 @@
   function renderTeams() {
     teamsEl.innerHTML = TEAMS.map(team => `
       <article class="team-card" id="card-${team.id}" data-selected="false">
-        <div class="team-top">
-          <div class="team-logo">${team.logo
-            ? `<img src="${team.logo}" alt="${team.name} logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${team.initials}'}))" />`
-            : team.initials}</div>
-          <div class="team-heading">
-            <p class="company-name">${team.name} <span class="tagline">${team.tagline}</span></p>
-            ${team.highlight ? `<p class="highlight">${team.highlight}</p>` : ""}
-          </div>
-          <button type="button" class="request-btn" data-team="${team.id}" data-selected="false">
-            Request Intro
-          </button>
+        <div class="team-logo">${team.logo
+          ? `<img src="${team.logo}" alt="${team.name} logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${team.initials}'}))" />`
+          : team.initials}</div>
+        <div class="team-heading">
+          <p class="company-name">${team.name} <span class="tagline">${team.tagline}</span></p>
+          ${team.highlight ? `<p class="highlight">${team.highlight}</p>` : ""}
         </div>
+        <button type="button" class="request-btn" data-team="${team.id}" data-selected="false">
+          Request Intro
+        </button>
         <div class="team-links">
           ${linkOrText(team.links.website, "Website")}
           <span class="dot sep"></span>
