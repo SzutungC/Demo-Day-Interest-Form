@@ -30,10 +30,11 @@ function doPost(e) {
 
     const name = (data.name || "").toString().trim();
     const email = (data.email || "").toString().trim();
+    const telegram = (data.telegram || "").toString().trim();
     const fund = (data.fund || "").toString().trim();
     const teams = Array.isArray(data.teams) ? data.teams : [];
 
-    if (!name || !isValidEmail(email) || !fund || teams.length === 0) {
+    if (!name || !isValidEmail(email) || !telegram || !fund || teams.length === 0) {
       return jsonResponse({ ok: false, error: "Missing or invalid required fields." });
     }
 
@@ -42,6 +43,7 @@ function doPost(e) {
       new Date(),
       name,
       email,
+      telegram,
       fund,
       teams.join(", "),
     ]);
@@ -57,7 +59,7 @@ function getOrCreateSheet() {
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(["Timestamp", "Investor Name", "Email", "Fund / Company", "Selected Teams"]);
+    sheet.appendRow(["Timestamp", "Investor Name", "Email", "Telegram Handle", "Fund / Company", "Selected Teams"]);
   }
   return sheet;
 }

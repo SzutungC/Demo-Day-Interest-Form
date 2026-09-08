@@ -545,6 +545,11 @@
         <input type="email" id="input-email" name="email" placeholder="jane@fund.com" autocomplete="email" />
         <p class="field-error">Enter a valid email address.</p>
       </div>
+      <div class="field" id="field-telegram">
+        <label for="input-telegram">Telegram Handle <span class="req">*</span></label>
+        <input type="text" id="input-telegram" name="telegram" placeholder="@yourhandle" />
+        <p class="field-error">Enter your Telegram handle.</p>
+      </div>
       <div class="field" id="field-fund">
         <label for="input-fund">Fund / Company Name <span class="req">*</span></label>
         <input type="text" id="input-fund" name="fund" placeholder="Acme Ventures" autocomplete="organization" />
@@ -799,12 +804,13 @@
   function updateSubmitState() {
     const name = document.getElementById("input-name").value.trim();
     const email = document.getElementById("input-email").value.trim();
+    const telegram = document.getElementById("input-telegram").value.trim();
     const fund = document.getElementById("input-fund").value.trim();
-    const ready = state.selected.size > 0 && name && isValidEmail(email) && fund;
+    const ready = state.selected.size > 0 && name && isValidEmail(email) && telegram && fund;
     submitBtn.disabled = !ready;
   }
 
-  ["input-name", "input-email", "input-fund"].forEach(id => {
+  ["input-name", "input-email", "input-telegram", "input-fund"].forEach(id => {
     document.getElementById(id).addEventListener("input", () => {
       clearFieldError(id);
       updateSubmitState();
@@ -820,10 +826,12 @@
     let valid = true;
     const name = document.getElementById("input-name").value.trim();
     const email = document.getElementById("input-email").value.trim();
+    const telegram = document.getElementById("input-telegram").value.trim();
     const fund = document.getElementById("input-fund").value.trim();
 
     if (!name) { document.getElementById("field-name").classList.add("invalid"); valid = false; }
     if (!email || !isValidEmail(email)) { document.getElementById("field-email").classList.add("invalid"); valid = false; }
+    if (!telegram) { document.getElementById("field-telegram").classList.add("invalid"); valid = false; }
     if (!fund) { document.getElementById("field-fund").classList.add("invalid"); valid = false; }
 
     return valid;
@@ -859,6 +867,7 @@
     const payload = {
       name: document.getElementById("input-name").value.trim(),
       email: document.getElementById("input-email").value.trim(),
+      telegram: document.getElementById("input-telegram").value.trim(),
       fund: document.getElementById("input-fund").value.trim(),
       teams: Array.from(state.selected).map(id => TEAMS.find(t => t.id === id).name),
     };
