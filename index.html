@@ -633,12 +633,14 @@
       id: "team-3",
       name: "ROCA Beneficios",
       initials: "RB",
-      logo: "logos/chipi-pay.png",
+      logo: "logos/roca-beneficios.png",
       tagline: "ROCA is payroll-linked credit and benefits for Mexico's workforce.",
       highlight: "15 years &middot; <b>91</b> companies &middot; <b>11,400+</b> workers served &middot; <b>4%</b> historical default rate",
-      links: { website: "https://rocabeneficios.vercel.app/en", pitch: "", deck: "https://docs.google.com/presentation/d/1JOA9SSNjC30PuPRmvuwS9lZDsCXiGe1CcPx_mdx7mQM/edit?usp=sharing", social: "https://x.com/HiChipiPay" },
+      links: { website: "https://rocabeneficios.vercel.app/en", pitch: "", deck: "https://rocapools.com/en/deck", social: "https://www.linkedin.com/company/rocabeneficios/" },
+      socialLabel: "LinkedIn",
       founders: [
-        { name: "Carlos Castillo", url: "https://www.linkedin.com/in/carloscastilloperera/" }
+        { name: "Carlos Castillo", url: "https://www.linkedin.com/in/carloscastilloperera/" },
+        { name: "Roberto Carreño", url: "https://www.linkedin.com/in/roberto-carre%C3%B1o-68326b13" }
       ]
     },
     {
@@ -734,7 +736,7 @@
           <span class="dot sep"></span>
           ${linkOrText(team.links.deck, "Deck")}
           <span class="dot sep"></span>
-          ${linkOrText(team.links.social, "X")}
+          ${linkOrText(team.links.social, team.socialLabel || "X")}
         </div>
         <div class="founders">
           <span class="label">Founders:</span>${team.founders.map(f => linkOrText(f.url, f.name)).join(" / ")}
